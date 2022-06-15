@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TextInput, Pressable, Image } from 'react-nativ
 const PlatformCard = ({id, name, image, navigation}:any) => {
 
     const goToAdd = () => {
-        navigation.navigate('AddNew', {id: id, name: name, image: image})
+        navigation.navigate('Add', {id: id, name: name, image: image})
     }
 
   return (

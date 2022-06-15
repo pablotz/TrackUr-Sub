@@ -7,7 +7,6 @@ import { auth, db } from '../../firebase';
 const SelectPlatform = ({navigation}:any) => {
     const [platforms, setPlatforms] = useState([]);
     const [selected, setSelected] = useState(undefined);
-    const [query, setQuery] = useState('');
 
     useEffect(() => {
         let platforms:any = [];
@@ -22,7 +21,7 @@ const SelectPlatform = ({navigation}:any) => {
     }, [])
 
   return (
-    <View style={styles.container}>
+    <View>
         <FlatList 
         data={platforms} 
         numColumns={2}
@@ -41,10 +40,6 @@ const SelectPlatform = ({navigation}:any) => {
 
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
     button: {
         backgroundColor: '#00bfff',
         padding: 10,
@@ -59,7 +54,27 @@ const styles = StyleSheet.create({
     text: {
         color: '#fff',
         fontSize: 20
+    },
+    search: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: '5%',
+        marginRight: '5%'
+    },
+    input: {
+        width: '80%',
+        height: 40,
+        borderColor: '#000',
+        borderWidth: 1,
+        borderRadius: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        color: '#000'
     }
+
 })
 
 export default SelectPlatform

@@ -5,7 +5,7 @@ import { auth, db } from '../../firebase';
 
 
 const AddNew = ({route, navigation}:any) => {
-    const {id, name, image} = route.params;
+    const {id, name, image, endDatePr} = route.params;
 
     const intervals = [
         {label: '1 Month', value: '1 Month'},
@@ -35,7 +35,7 @@ const AddNew = ({route, navigation}:any) => {
     };
 
     const handleSubs = () => {
-        navigation.navigate('Dashboard')
+        navigation.navigate('Dashboard', {id: id})
     }
 
     // Add to subscriptions collection
@@ -56,11 +56,42 @@ const AddNew = ({route, navigation}:any) => {
         })
     }
 
-    useEffect(() => {
-        const today = new Date();
-        today.setDate(today.getDate() - 1);
+    //edit document firebase
+    const editSubscription = () => {
+        db.collection('subscriptions').doc(id).update({
+            endDate: endDate.getTime()
+        })
+        .then(() => {
+            console.log('Subscription edited!')
+            handleSubs()
+        }).catch((error:any) => {
+            console.log(`[CLIENT]: ${error.message}`)
+            alert(error.message)
+        }).then(() => {
+            navigation.navigate('Dashboard', {id: id})})
+    }
 
-        setEndDate(today);
+    const deleteSubscription = () => {
+        db.collection('subscriptions').doc(id).delete()
+        .then(() => {
+            console.log('Subscription deleted!')
+            handleSubs()
+        }).catch((error:any) => {
+            console.log(`[CLIENT]: ${error.message}`)
+            alert(error.message)
+        }).then(() => {
+            navigation.navigate('Dashboard', {id: id})})
+    }
+
+    useEffect(() => {
+        if(endDatePr) {
+            const date = new Date(endDatePr);
+            setEndDate(date);
+        } else {
+            const today = new Date();
+            today.setDate(today.getDate() - 1);
+            setEndDate(today);
+        }
     }, [])
 
   return (
@@ -92,8 +123,19 @@ const AddNew = ({route, navigation}:any) => {
                 {
                     endDate && (
                         <View style={{alignItems: 'center'}}>
-                            <Pressable style={styles.endButton} onPress={addSubscription}>
-                                <Text style={styles.endTitle}>Add subscription 😎</Text>
+                            <Pressable style={styles.endButton} onPress={() => {endDatePr ? editSubscription() : addSubscription()}}>
+                                <Text style={styles.endTitle}>
+                                { endDatePr ? 'Edit Subscription 🧐' : 'Add Subscription 😎' }
+                                </Text>
+                            </Pressable>
+                        </View>
+                    )
+                }
+                {
+                    endDatePr && (
+                        <View style={{alignItems: 'center'}}>
+                            <Pressable style={styles.deleteButton} onPress={() => deleteSubscription()}>
+                                <Text style={styles.deleteTitle}>Delete subscription 😭</Text>
                             </Pressable>
                         </View>
                     )
@@ -157,7 +199,7 @@ const styles = StyleSheet.create({
     endSubscription: {
         fontSize: 20,
         fontWeight: '500',
-        marginTop: 80,
+        marginTop: 70,
     },
     datePicker: {
         justifyContent: 'center',
@@ -181,12 +223,27 @@ const styles = StyleSheet.create({
     },
 
     endButton: {
-        marginTop: 100,
+        marginTop: 50,
         backgroundColor: '#35b557',
         padding: 13,
         width: 250,
         alignItems: 'center',
         borderRadius: 20,
+    },
+
+    deleteButton: {
+        marginTop: 30,
+        backgroundColor: '#b81818',
+        padding: 10,
+        width: 170,
+        alignItems: 'center',
+        borderRadius: 20,
+    },
+
+    deleteTitle: {
+        fontSize: 14,
+        fontWeight: '500',
+        color: '#fff',
     },
 
     endTitle: {

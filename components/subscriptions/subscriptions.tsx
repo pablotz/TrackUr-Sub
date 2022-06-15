@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native'
 import React, {useState, useEffect} from 'react'
 
-const Subscription = ({name, endDate, image}:any) => {
+const Subscription = ({id, name, endDate, image, navigation}:any) => {
 
     const [date, setDate] = useState(new Date(endDate));
     const [timeLeft, setTimeLeft] = useState("");
@@ -14,7 +14,7 @@ const Subscription = ({name, endDate, image}:any) => {
     
         var yearsDisplay = years > 0 ? years + (years == 1 ? " year, " : " years, ") : "";
         var monthsDisplay = months > 0 ? months + (months == 1 ? " month, " : " months, ") : "";
-        var daysDisplay = days > 0 ? days + (days == 1 ? " day" : " days") : "";
+        var daysDisplay = days > 0 ? days + (days == 1 ? "D" : " days") : "";
         defineDanger(yearsDisplay + monthsDisplay + daysDisplay);
         setTimeLeft(yearsDisplay + monthsDisplay + daysDisplay);
     }
@@ -29,6 +29,10 @@ const Subscription = ({name, endDate, image}:any) => {
         } 
     }
 
+    const goToEdit = () => {
+        navigation.navigate('Add', {name: name, endDatePr: endDate, image: image, id: id})
+    }
+
     useEffect(() => {
         let today: any = new Date();
         let end: any = new Date(endDate);
@@ -39,7 +43,7 @@ const Subscription = ({name, endDate, image}:any) => {
     },[])
 
   return (
-    <Pressable>
+    <Pressable onPress={() => goToEdit()}>
         <View style={styles.styleContainer}>
             <View style={styles.imageContainer}>
                 <Image source={{uri: image}} style={styles.img} />

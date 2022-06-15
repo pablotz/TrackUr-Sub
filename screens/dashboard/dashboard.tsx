@@ -4,14 +4,21 @@ import { auth, db } from '../../firebase'
 import Add from '../../assets/SVG/add'
 import { useEffect } from 'react'
 import Subscription from '../../components/subscriptions/subscriptions'
+import { types } from '../../Store/StoreReducer'
+import { useDispatch, useStore } from '../../Store/StoreProvider'
+import NoSubscriptions from '../../components/noSubscriptionsList/noSubscriptions'
 
-const Dashboard = ({navigation}:any) => {
+const Dashboard = ({route, navigation}:any) => {
+
+    const store = useStore();
+    const dispatch = useDispatch();
+
 
     const handleSignOut = () => {
         auth.signOut()
         .then(() => {
-            navigation.navigate('Login')
             console.log('User signed out!')
+            dispatch({type: types.authLogout})
         }).catch((error:any) => {
             console.log(`[CLIENT]: ${error.message}`)
             alert(error.message)
@@ -30,7 +37,7 @@ const Dashboard = ({navigation}:any) => {
         db.collection('subscriptions').where('user', '==', auth.currentUser.uid).get()
         .then((snapshot:any) => {
             snapshot.docs.forEach((doc:any) => {
-                userData.push(doc.data())
+                userData.push({id: doc.id, ...doc.data()});
             })
             setData(userData)
         }).catch((error:any) => {
@@ -40,18 +47,8 @@ const Dashboard = ({navigation}:any) => {
 
     }
 
-    useEffect(() => {
-        getData()
-    }, [])
-
-  return (
-    // <View style={styles.container}>
-    //     <Text>Email: {auth.currentUser?.email}</Text>
-    //     <Pressable style={styles.button} onPress={() => {handleSignOut();}}>
-    //         <Text style={styles.text}>Sign Out</Text>
-    //     </Pressable>
-    // </View>
-    <View style={styles.container}>
+    const Header = () => {
+        return ( 
         <View style={styles.addButton}>
             <Pressable style={styles.button} onPress={() => goToAdd()}> 
                 <Add 
@@ -59,13 +56,33 @@ const Dashboard = ({navigation}:any) => {
                     height={40}
                 /> 
             </Pressable>
+            <Pressable style={styles.signOutButton} onPress={() => {handleSignOut();}}>
+                <Text style={styles.signOutText}>Log out</Text>
+            </Pressable>
         </View>
-        <FlatList
+        )
+    }
+
+    
+    useEffect(() => {
+        navigation.addListener('focus', () => {
+            setData([])
+            getData()
+        })
+    }, [])
+
+  return (
+    <View style={styles.container}>
+            <FlatList
+            ListHeaderComponent={Header}
             data={data}
+            ListEmptyComponent={NoSubscriptions}
             keyExtractor={(item:any) => item.id}
             renderItem={({item}:any) => {
                 return (
                     <Subscription 
+                        navigation={navigation}
+                        id={item.id}
                         name={item.name}
                         endDate={item.endDate}
                         image={item.image}
@@ -82,14 +99,35 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 40
     },
     button: {
         backgroundColor: '#d1682c',
-        padding: 10,
-        margin: 10,
-        alignItems: 'center',
-        borderRadius: 15,
+        padding: 12,
+        margin: 15,
+        borderRadius: 18,
     },
+
+    signOutButton: {
+        backgroundColor: '#c74d32',
+        padding: 10,
+        width: 100,
+        height: 50,
+        marginTop: 20,
+        marginLeft: '45%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 15,
+        elevation: 20,
+        shadowColor: '#52006A',
+    },
+
+    signOutText: {
+        color: '#fff',
+        fontSize: 20,
+        fontWeight: '500'
+    },
+
     subscriptions: {
         marginTop: 70,
 
@@ -100,7 +138,7 @@ const styles = StyleSheet.create({
     },
     addButton: {
         marginTop: 30,
-        marginLeft: 280,
+        flexDirection: 'row',
     }
 })
 
