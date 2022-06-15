@@ -19,18 +19,16 @@ This is a mobile app that allows users to track their subscriptions to specific 
 
 ## Working app
 ### Login / Singup
-
-https://user-images.githubusercontent.com/29645521/173901925-f55e00a1-f02d-409b-b855-98158e190145.mp4
+![login](https://user-images.githubusercontent.com/29645521/173902285-2cfb1b13-a4fe-46e1-93ba-032c0d8bddf1.gif)
 
 
 
 ### Add new subscription
-
-
-https://user-images.githubusercontent.com/29645521/173901998-39891797-ccae-453c-8e45-b8a1ce4b6429.mp4
+https://user-images.githubusercontent.com/29645521/173902302-9a889218-f196-4322-a057-9983fabdfff3.mp4
 
 
 ### Edit / dElete subscription
+https://user-images.githubusercontent.com/29645521/173902322-a4bf8cee-7d47-40aa-af5a-9d2cac7a9a30.mp4
 
-https://user-images.githubusercontent.com/29645521/173901972-fc6c2fbf-c1d9-49dd-b04f-d16608139b7c.mp4
+
 
