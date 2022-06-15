@@ -3,6 +3,7 @@
 <hr>
 
 ## Stack used
+- Expo
 - React Native
 - React Navigation
 - FireBase
