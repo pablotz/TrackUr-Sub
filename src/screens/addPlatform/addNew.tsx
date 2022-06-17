@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { View, Text, StyleSheet, TextInput, Pressable, Image } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { auth, db } from '../../firebase';
+import { auth, db } from '../../../firebase';
 
 
 const AddNew = ({route, navigation}:any) => {

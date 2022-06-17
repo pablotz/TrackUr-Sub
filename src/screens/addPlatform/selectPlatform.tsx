@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { View, Text, StyleSheet, TextInput, Pressable, FlatList } from 'react-native'
 import { Picker, onOpen } from 'react-native-actions-sheet-picker';
 import PlatformCard from '../../components/platformCard/platformCard';
-import { auth, db } from '../../firebase';
+import { auth, db } from '../../../firebase';
 
 const SelectPlatform = ({navigation}:any) => {
     const [platforms, setPlatforms] = useState([]);
