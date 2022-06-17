@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { View, Text, StyleSheet, TextInput, Pressable, ToastAndroid } from 'react-native'
-import { auth } from '../../firebase'
+import { auth } from '../../../firebase'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { types } from '../../Store/StoreReducer'
 import { useStore, useDispatch } from '../../Store/StoreProvider'

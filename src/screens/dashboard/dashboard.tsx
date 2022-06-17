@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { View, Text, StyleSheet, TextInput, Pressable, FlatList } from 'react-native'
-import { auth, db } from '../../firebase'
+import { auth, db } from '../../../firebase'
 import Add from '../../assets/SVG/add'
 import { useEffect } from 'react'
 import Subscription from '../../components/subscriptions/subscriptions'
